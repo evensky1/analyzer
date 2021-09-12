@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PageController {
     @GetMapping
-    public String page(){
+    public String page() {
         return "mainPage";
     }
+
     @GetMapping("/start")
-    public String testCall(){
+    public String testCall() {
         return "mainPage2";
     }
 }

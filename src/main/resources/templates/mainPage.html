@@ -3,8 +3,12 @@
 <head>
     <title>Something</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../static/css/mainStyle.css" th:href="@{/css/mainStyle.css}" type="text/css"/>
+    <!-- th:href это модифицирующий атрибут, который вычисляет @ссылку(по которой страница обращается к .css файлу)
+    и передаёт это значение в href -->
 </head>
 <body>
-<p>Something here</p>
+<textarea rows="10" cols="45" name="text"></textarea>
+<button type="submit">Check</button>
 </body>
 </html>
