@@ -1,3 +1,6 @@
+body{
+    background-color: #FAE0A3;
+}
 textarea{
     position: absolute;
     left: 200px;
@@ -11,10 +14,22 @@ button[type=submit]{
     left: 200px;
     width: 200px;
     height: 39px;
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
+    background-color: #3E4E70;
+    color: #FAE0A3;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.btn button:hover{
+    position: absolute;
+    bottom: 60px;
+    left: 200px;
+    width: 200px;
+    height: 39px;
+    background-color: #D39A12;
+    border-width: 3px;
+    color: #FFFFFF;
     text-align: center;
     text-decoration: none;
     display: inline-block;

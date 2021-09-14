@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Something</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,8 +10,10 @@
 <body>
 <form method="post" th:object="${inputCode}">
     <!-- th:object это объект модели которую мы передали в get-запросе из контроллера -->
-    <textarea name="Code" placeholder="Code"></textarea>
-    <button type="submit">Check</button>
+    <textarea id="textarea" name="Code" placeholder="Code">&nbsp;</textarea>
+    <div class="btn">
+        <button type="submit">Check</button>
+    </div>
 </form>
 
 </body>
