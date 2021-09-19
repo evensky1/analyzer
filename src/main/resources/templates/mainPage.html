@@ -10,10 +10,20 @@
 <body>
 <form method="post" th:object="${inputCode}">
     <!-- th:object это объект модели которую мы передали в get-запросе из контроллера -->
-    <textarea id="textarea" name="Code" placeholder="Code">&nbsp;</textarea>
+    <textarea id="textarea" name="Code" placeholder="Code" th:utext="${inputCode.getCode()}"></textarea>
     <div class="btn">
         <button type="submit">Check</button>
     </div>
+    <table>
+        <tr>
+            <th>j</th>
+            <th>Оператор</th>
+            <th>Кол-во</th>
+            <th>j</th>
+            <th>Операнд</th>
+            <th>Кол-во</th>
+        </tr>
+    </table>
 </form>
 
 </body>

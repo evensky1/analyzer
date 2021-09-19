@@ -18,8 +18,7 @@ public class PageController {
     @PostMapping
     public String page(@ModelAttribute("inputCode") Code code, Model model){
         //строка передаётся в класс-модель Code, в котором следует организовать логику парсера
-        System.out.println(code.getCode()); //тестирование
-        //пока не разобрался как отставить код программы в textarea после отправки
+        System.out.println(code.getCode());
         return "mainPage";
     }
 }
