@@ -14,7 +14,7 @@
     <div class="btn">
         <button type="submit">Check</button>
     </div>
-    <table>
+    <table class="tcont countLines">
         <tr>
             <th>j</th>
             <th>Оператор</th>
@@ -22,6 +22,11 @@
             <th>j</th>
             <th>Операнд</th>
             <th>Кол-во</th>
+        </tr>
+        <tr th:each="instance: ${metrics}">
+            <td></td>
+            <td th:text="${instance.key}">smth</td>
+            <td th:text="${instance.getValue().toString()}">smth</td>
         </tr>
     </table>
 </form>

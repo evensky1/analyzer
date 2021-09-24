@@ -1,7 +1,6 @@
 package com.poit.analyzer.controllers;
 
 import com.poit.analyzer.model.Code;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +18,9 @@ public class PageController {
     public String page(@ModelAttribute("inputCode") Code code, Model model){
         //строка передаётся в класс-модель Code, в котором следует организовать логику парсера
         System.out.println(code.getCode());
+        System.out.println(code.codeAnalyzing());
+        model.addAttribute("metrics", code.codeAnalyzing());
+
         return "mainPage";
     }
 }

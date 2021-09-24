@@ -39,3 +39,13 @@ th {
 td {
     border: 1px solid grey;
 }
+.countLines{
+    counter-reset: trCount;
+    overflow: auto;
+    white-space: nowrap;
+}
+.countLines tr td:first-child:before{
+    position: relative;
+    counter-increment: trCount;
+    content: counter(trCount);
+}
