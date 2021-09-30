@@ -20,7 +20,6 @@ public class PageController {
         System.out.println(code.getCode());
         System.out.println(code.codeAnalyzing());
         model.addAttribute("metrics", code.codeAnalyzing());
-
         return "mainPage";
     }
 }
