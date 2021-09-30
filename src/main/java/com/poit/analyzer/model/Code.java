@@ -61,34 +61,4 @@ public class Code {
         }
         return resultTable;
     }
-    /*
-    private HashMap<String, Integer> createMap() {
-        resultTable = new HashMap<>();
-        File regSrc = new File("regularExpressions.txt");
-        try {
-            Scanner read = new Scanner(regSrc);
-            while (read.hasNext()){
-                resultTable.put(read.nextLine(), 0);
-            }
-            return resultTable;
-        } catch(FileNotFoundException e) {
-            System.out.println(e.getMessage());
-            resultTable.put("0", 0);
-            return resultTable;
-        }
-    }
-    public HashMap<String, Integer> codeAnalyzing() {
-        resultTable = createMap();
-        for (String regExp : resultTable.keySet()) {
-            Pattern halstedMetrics = Pattern.compile(regExp);
-            Matcher halstedOperators = halstedMetrics.matcher(code);
-            while (halstedOperators.find()) {
-                if(resultTable.get(halstedOperators.group()) != null) {
-                    resultTable.put(halstedOperators.group(), resultTable.get(halstedOperators.group()) + 1);
-                }
-            }
-        }
-        return resultTable;
-    }
-     */
 }
