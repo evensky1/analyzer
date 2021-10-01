@@ -34,7 +34,7 @@ public class Code {
         try {
             Scanner read = new Scanner(regSrc);
             while (read.hasNext()){
-                regArr.add(read.nextLine());
+                regArr.add(read.nextLine().trim());
             }
             return regArr;
         } catch(FileNotFoundException e) {
@@ -45,20 +45,42 @@ public class Code {
     }
 
     public HashMap<String, Integer> codeAnalyzing() {
-        //вроде работает правильно, но беда с регулярками
+        String codeTemp = deleteCommentsAndStringsFromCode(code);
+
         ArrayList<String> regulars = createArray();
         resultTable = new HashMap<>();
+
+        Pattern pattern;
+        Matcher matcher;
+        String match;
         for (String regExp : regulars) {
-            Pattern halstedMetrics = Pattern.compile(regExp);
-            Matcher halstedOperators = halstedMetrics.matcher(code);
-            while (halstedOperators.find()) {
-                if(resultTable.get(halstedOperators.group()) == null) {
-                    resultTable.put(halstedOperators.group(), 1);
-                } else {
-                    resultTable.put(halstedOperators.group(), resultTable.get(halstedOperators.group()) + 1);
+            if(!regExp.isEmpty()) {
+                pattern = Pattern.compile(regExp);
+                matcher = pattern.matcher(codeTemp);
+                while (matcher.find()) {
+                    // удаляем найденное, чтобы, например, "+=" не реагировало на "+" и "="
+                    // для этой же цели в файле с регулярками всё в порядке от длинного к короткому
+                    codeTemp = codeTemp.replaceFirst(regExp, "");
+                    match = matcher.group().trim().replaceAll("[()]", "");
+                    if (match.equals(":")) {
+                        match = "? :";
+                    }
+                    if (resultTable.get(match) == null) {
+                        resultTable.put(match, 1);
+                    } else {
+                        resultTable.put(match, resultTable.get(match) + 1);
+                    }
                 }
             }
         }
         return resultTable;
+    }
+
+    public String deleteCommentsAndStringsFromCode(String code){
+        // Очевидно, что то, что в строках и комментариях, считать не стоит
+        String codeTemp = code.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
+        codeTemp = codeTemp.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
+        //System.out.println("******************************** NEW CODE *******************************\n" + codeTemp);
+        return codeTemp;
     }
 }
