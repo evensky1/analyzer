@@ -1,36 +1,37 @@
 body{
-    background-color: #FAE0A3;
+    background-color: #CDC9C9;
 }
 textarea{
     position: absolute;
-    font-family: Consolas, Arial; /* второй шрифт необходим на случай, если первый не поддерживаетсся браузером */
+    font-family: Consolas, serif; /* второй шрифт необходим на случай, если первый не поддерживаетсся браузером */
     font-size: 16px;
-    left: 100px;
-    bottom: 100px;
-    width:800px;
-    height: 600px;
+    left: 1%;
+    top: 10%;
+    right: 50%;
+    bottom: 10%;
 }
 .btn button{
     position: absolute;
-    bottom: 60px;
-    left: 100px;
-    width: 200px;
-    height: 39px;
+    top: 90%;
+    bottom: 5%;
+    left: 40%;
+    right: 51%;
+
     background-color: #3E4E70;
-    color: #FAE0A3;
+    color: #FFFFFF;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 100%;
 }
 .btn button:hover{
-    background-color: #D39A12;
+    background-color: #4E5E80;
     border-width: 4px;
     color: #FFFFFF;
 }
 table {
-    margin-left: 950px;
-    margin-top: 50px;
+    margin-left: 52%;
+    margin-top: 5%;
     border: 1px solid grey;
 }
 th {
