@@ -14,34 +14,36 @@
     <div class="btn">
         <button type="submit">Check</button>
     </div>
-    <table class="tcont countLines">
-        <tr>
-            <th>j</th>
-            <th>Оператор</th>
-            <th>Кол-во</th>
-
-        </tr>
-        <tr th:each="instance: ${metrics}">
-            <td></td>
-            <td th:text="${instance.key}">smth</td>
-            <td th:text="${instance.getValue().toString()}">smth</td>
-        </tr>
-    </table>
-    <div class="anotherTable">
-        <!-- Вывод потом поправлю. Таблица почему-то поехала-->
-        <table class="tcont countLines">
-            <tr>
-                <th>j</th>
-                <th>Операнд</th>
-                <th>Кол-во</th>
-            </tr>
-            <tr th:each="instance: ${operandsMetrics}">
-                <td></td>
-                <td th:text="${instance.key}">smth</td>
-                <td th:text="${instance.getValue().toString()}">smth</td>
-            </tr>
-        </table>
+    <div class="tableBox">
+        <div class="firstTable">
+            <table class="tcont countLines">
+                <tr>
+                    <th>j</th>
+                    <th>Оператор</th>
+                    <th>Кол-во</th>
+                </tr>
+                <tr th:each="instance: ${operatorMetrics}">
+                    <td></td>
+                    <td th:text="${instance.key}">smth</td>
+                    <td th:text="${instance.getValue().toString()}">smth</td>
+                </tr>
+            </table>
         </div>
+        <div class="anotherTable">
+            <table class="tcont countLines">
+                <tr>
+                    <th>j</th>
+                    <th>Операнд</th>
+                    <th>Кол-во</th>
+                </tr>
+                <tr th:each="instance: ${operandMetrics}">
+                    <td></td>
+                    <td th:text="${instance.key}">smth</td>
+                    <td th:text="${instance.getValue().toString()}">smth</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </form>
 
 </body>
