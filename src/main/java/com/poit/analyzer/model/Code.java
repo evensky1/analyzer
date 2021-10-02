@@ -12,7 +12,7 @@ public class Code {
     //Тут можно организовать логику самого парсера
     private String code;
     private HashMap<String, Integer> resultOperatorsTable,
-                                     resultOperandsTable;
+            resultOperandsTable;
 
     public Code() {
     }
@@ -30,15 +30,15 @@ public class Code {
     }
 
     private ArrayList<String> createArray() {
-        ArrayList<String> regArr= new ArrayList<>();
+        ArrayList<String> regArr = new ArrayList<>();
         File regSrc = new File("regularExpressions.txt");
         try {
             Scanner read = new Scanner(regSrc);
-            while (read.hasNext()){
+            while (read.hasNext()) {
                 regArr.add(read.nextLine().trim());
             }
             return regArr;
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
             regArr.add("");
             return regArr;
@@ -54,7 +54,7 @@ public class Code {
         Matcher matcher;
         String match;
         for (String regExp : regulars) {
-            if(!regExp.isEmpty()) {
+            if (!regExp.isEmpty()) {
                 pattern = Pattern.compile(regExp);
                 matcher = pattern.matcher(codeTemp);
                 while (matcher.find()) {
@@ -75,15 +75,31 @@ public class Code {
         }
         return resultOperatorsTable;
     }
-    public HashMap<String, Integer> codeOperandAnalyzing(){
+
+    public HashMap<String, Integer> codeOperandAnalyzing() {
         resultOperandsTable = new HashMap<>();
         String codeTemp = deleteCommentsAndStringsFromCode(code);
-
+        //поиск инициализаций переменных и внесение их(переменных) в мапу
         Pattern pattern = Pattern.compile("\\b[_a-zA-Z][_\\da-zA-Z]*\\b(?=\\s*=)");
         Matcher matcher = pattern.matcher(codeTemp);
-
-        while (matcher.find()){
-            if(resultOperandsTable.get(matcher.group()) == null){
+        while (matcher.find()) {
+                resultOperandsTable.putIfAbsent(matcher.group(), 0);
+        }
+        //подсчёт вхождений каждой переменной
+        for (String varOperand : resultOperandsTable.keySet()) {
+            int count = 0; //так не хотелось много раз вызывать put и get
+            pattern = Pattern.compile("\\b" + varOperand + "\\b");
+            matcher = pattern.matcher(codeTemp);
+            while (matcher.find()) {
+                count++;
+            }
+            resultOperandsTable.put(varOperand, count);
+        }
+        //подсчёт числовых литералов
+        pattern = Pattern.compile(" [\\d]+\\b|\\b[\\d]+ |\\b[\\d]\\b");
+        matcher = pattern.matcher(codeTemp);
+        while (matcher.find()) {
+            if (resultOperandsTable.get(matcher.group()) == null) {
                 resultOperandsTable.put(matcher.group(), 1);
             } else {
                 resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
@@ -91,7 +107,8 @@ public class Code {
         }
         return resultOperandsTable;
     }
-    public String deleteCommentsAndStringsFromCode(String code){
+
+    public String deleteCommentsAndStringsFromCode(String code) {
         // Очевидно, что то, что в строках и комментариях, считать не стоит
         String codeTemp = code.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
         codeTemp = codeTemp.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
