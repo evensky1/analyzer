@@ -3,9 +3,9 @@ body{
 }
 textarea{
     position: absolute;
-    font-family: Consolas, serif; /* второй шрифт необходим на случай, если первый не поддерживаетсся браузером */
+    font-family: Consolas, serif; /* второй шрифт необходим на случай, если первый не поддерживается браузером */
     font-size: 16px;
-    left: 1%;
+    left: 10%;
     top: 10%;
     right: 50%;
     bottom: 10%;
@@ -49,4 +49,14 @@ td {
     position: relative;
     counter-increment: trCount;
     content: counter(trCount);
+}
+.anotherTable table{
+    margin-left: 70%;
+    border: 1px solid grey;
+}
+.anotherTable th{
+    border: 1px solid grey;
+}
+.anotherTable td{
+    border: 1px solid grey;
 }

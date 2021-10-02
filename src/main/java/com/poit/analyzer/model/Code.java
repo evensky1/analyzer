@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
 public class Code {
     //Тут можно организовать логику самого парсера
     private String code;
-    private HashMap<String, Integer> resultTable;
+    private HashMap<String, Integer> resultOperatorsTable,
+                                     resultOperandsTable;
 
     public Code() {
     }
@@ -44,11 +45,10 @@ public class Code {
         }
     }
 
-    public HashMap<String, Integer> codeAnalyzing() {
+    public HashMap<String, Integer> codeOperatorsAnalyzing() {
         String codeTemp = deleteCommentsAndStringsFromCode(code);
-
         ArrayList<String> regulars = createArray();
-        resultTable = new HashMap<>();
+        resultOperatorsTable = new HashMap<>();
 
         Pattern pattern;
         Matcher matcher;
@@ -65,17 +65,32 @@ public class Code {
                     if (match.equals(":")) {
                         match = "? :";
                     }
-                    if (resultTable.get(match) == null) {
-                        resultTable.put(match, 1);
+                    if (resultOperatorsTable.get(match) == null) {
+                        resultOperatorsTable.put(match, 1);
                     } else {
-                        resultTable.put(match, resultTable.get(match) + 1);
+                        resultOperatorsTable.put(match, resultOperatorsTable.get(match) + 1);
                     }
                 }
             }
         }
-        return resultTable;
+        return resultOperatorsTable;
     }
+    public HashMap<String, Integer> codeOperandAnalyzing(){
+        resultOperandsTable = new HashMap<>();
+        String codeTemp = deleteCommentsAndStringsFromCode(code);
 
+        Pattern pattern = Pattern.compile("\\b[_a-zA-Z][_\\da-zA-Z]*\\b(?=\\s*=)");
+        Matcher matcher = pattern.matcher(codeTemp);
+
+        while (matcher.find()){
+            if(resultOperandsTable.get(matcher.group()) == null){
+                resultOperandsTable.put(matcher.group(), 1);
+            } else {
+                resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
+            }
+        }
+        return resultOperandsTable;
+    }
     public String deleteCommentsAndStringsFromCode(String code){
         // Очевидно, что то, что в строках и комментариях, считать не стоит
         String codeTemp = code.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
