@@ -16,7 +16,6 @@ public class PageController {
     }
     @PostMapping
     public String page(@ModelAttribute("inputCode") Code code, Model model){
-        //строка передаётся в класс-модель Code, в котором следует организовать логику парсера
         model.addAttribute("operatorMetrics", code.codeOperatorsAnalyzing());
         model.addAttribute("operandMetrics", code.codeOperandAnalyzing());
         return "mainPage";

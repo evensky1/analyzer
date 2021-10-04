@@ -9,19 +9,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-
 public class Code {
     private String code;
     private HashMap<String, Integer> resultOperatorsTable,
             resultOperandsTable;
-    private int operatorsCount = 0, operatorsSum = 0,
-            operandsCount = 0, operandsSum = 0;
 
     public Code() {
     }
 
     public int getOperandsCount() {
-        operandsCount = 0;
+        int operandsCount = 0;
         if (resultOperandsTable != null) {
             for (String varOperand : resultOperandsTable.keySet()) {
                 operandsCount += 1;
@@ -31,27 +28,27 @@ public class Code {
     }
 
     public int getOperandsSum() {
-        operandsSum = 0;
+        int operandsSum = 0;
         if (resultOperandsTable != null) {
-            for (String varOperand : resultOperandsTable.keySet()) {
-                operandsSum += resultOperandsTable.get(varOperand);
+            for (int currentCount : resultOperandsTable.values()) {
+                operandsSum += currentCount;
             }
         }
         return operandsSum;
     }
 
     public int getOperatorsSum() {
-        operatorsSum = 0;
+        int operatorsSum = 0;
         if (resultOperatorsTable != null) {
-            for (String varOperator : resultOperatorsTable.keySet()) {
-                operatorsSum += resultOperatorsTable.get(varOperator);
+            for (int currentCount : resultOperatorsTable.values()) {
+                operatorsSum += currentCount;
             }
         }
         return operatorsSum;
     }
 
     public int getOperatorsCount() {
-        operatorsCount = 0;
+        int operatorsCount = 0;
         if (resultOperatorsTable != null) {
             for (String varOperator : resultOperatorsTable.keySet()) {
                 operatorsCount += 1;
@@ -60,10 +57,11 @@ public class Code {
         return operatorsCount;
     }
 
-    public double getVol(){
-        return (getOperandsSum()+getOperatorsSum()) *
-                (Math.log(getOperandsCount()+getOperatorsCount()) / Math.log(2));
+    public double getVol() {
+        return (getOperandsSum() + getOperatorsSum()) *
+                (Math.log(getOperandsCount() + getOperatorsCount()) / Math.log(2));
     }
+
     public Code(String code) {
         this.code = code;
     }
@@ -75,13 +73,15 @@ public class Code {
     public void setCode(String code) {
         this.code = code;
     }
-    public String createOutString(){
+
+    public String createOutString() {
         int operandsSum = getOperatorsCount() + getOperandsCount();
         int operatorsSum = getOperatorsSum() + getOperandsSum();
         return "Словарь программы h = " + getOperatorsCount() + " + " + getOperandsCount() + " = " + operandsSum +
                 "<br>Длина программы N = " + getOperatorsSum() + " + " + getOperandsSum() + " = " + operatorsSum +
                 "<br>Объём программы V = " + getVol();
     }
+
     private ArrayList<String> createArray() {
         ArrayList<String> regArr = new ArrayList<>();
         File regSrc = new File("regularExpressions.txt");
@@ -150,14 +150,17 @@ public class Code {
             }
             resultOperandsTable.put(varOperand, count);
         }
-        //подсчёт числовых литералов
-        pattern = Pattern.compile("(?<=\\W)\\d+");
-        matcher = pattern.matcher(codeTemp);
-        while (matcher.find()) {
-            if (resultOperandsTable.get(matcher.group()) == null) {
-                resultOperandsTable.put(matcher.group(), 1);
-            } else {
-                resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
+        //подсчёт литералов
+        String[] patterns = {"(?<!\\.)(?<=\\W)\\d+", "(?<=\\W)\\d+(?=(\\.\\d+))", "true|false", "\".\""};
+        for (String regExp : patterns) {
+            pattern = Pattern.compile(regExp);
+            matcher = pattern.matcher(codeTemp);
+            while (matcher.find()) {
+                if (resultOperandsTable.get(matcher.group()) == null) {
+                    resultOperandsTable.put(matcher.group(), 1);
+                } else {
+                    resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
+                }
             }
         }
         return resultOperandsTable;
