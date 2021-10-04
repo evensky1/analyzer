@@ -4,9 +4,9 @@
 \*\*=
 
 \*\*
-(\s|\))\.eql\?
-(\s|\))equal\?
-(\s|\))defined\?
+\.eql\?
+\bequal\?
+\bdefined\?
 
 ==
 <<
@@ -38,9 +38,24 @@
 \^
 ~
 !
-(\s|\))and(\s|\()
-(\s|\))or(\s|\()
-(\s|\))not(\s|\()
+\band\b
+\bor\b
+\bnot\b
 
 
 :
+
+\bif\b
+\belsif\b
+\bunless\b
+\bwhen\b
+\bloop\b
+\bwhile\b
+\buntil\b
+\bfor\b
+\.each\b
+\.times\b
+\.upto\b
+\.step\b
+\.each_index\b
+

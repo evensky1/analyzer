@@ -61,9 +61,11 @@ public class Code {
                     // удаляем найденное, чтобы, например, "+=" не реагировало на "+" и "="
                     // для этой же цели в файле с регулярками всё в порядке от длинного к короткому
                     codeTemp = codeTemp.replaceFirst(regExp, "");
-                    match = matcher.group().trim().replaceAll("[()]", "");
+                    match = matcher.group();
                     if (match.equals(":")) {
                         match = "? :";
+                    } else if (match.equals("when")) {
+                        match = "case when";
                     }
                     if (resultOperatorsTable.get(match) == null) {
                         resultOperatorsTable.put(match, 1);
@@ -96,7 +98,7 @@ public class Code {
             resultOperandsTable.put(varOperand, count);
         }
         //подсчёт числовых литералов
-        pattern = Pattern.compile(" [\\d]+\\b|\\b[\\d]+ |\\b[\\d]\\b");
+        pattern = Pattern.compile("(?<=\\W)\\d+");
         matcher = pattern.matcher(codeTemp);
         while (matcher.find()) {
             if (resultOperandsTable.get(matcher.group()) == null) {
@@ -112,7 +114,6 @@ public class Code {
         // Очевидно, что то, что в строках и комментариях, считать не стоит
         String codeTemp = code.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
         codeTemp = codeTemp.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
-        //System.out.println("******************************** NEW CODE *******************************\n" + codeTemp);
         return codeTemp;
     }
 }

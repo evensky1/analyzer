@@ -5,17 +5,17 @@ textarea{
     position: absolute;
     font-family: Consolas, serif; /* второй шрифт необходим на случай, если первый не поддерживается браузером */
     font-size: 16px;
-    left: 10%;
+    left: 3%;
     top: 10%;
-    right: 50%;
+    right: 60%;
     bottom: 10%;
 }
 .btn button{
     position: absolute;
     top: 90%;
     bottom: 5%;
-    left: 40%;
-    right: 51%;
+    left: 30%;
+    right: 61%;
 
     background-color: #3E4E70;
     color: #FFFFFF;
@@ -32,8 +32,8 @@ textarea{
 .tableBox table{
     position: absolute;
     display: flex;
-    margin-top: 10%;
-    margin-left: 52%;
+    top: 10%;
+    left: 42%;
 }
 .firstTable table {
     position: absolute;
@@ -56,9 +56,10 @@ textarea{
     content: counter(trCount);
 }
 .anotherTable table{
-    position: relative;
+    position: absolute;
     float: right;
-    margin-left: 65%;
+    left: 66%;
+    top: 10%;
     border: 1px solid grey;
 }
 .anotherTable th{
