@@ -182,8 +182,8 @@ public class Code {
         return resultOperandsTable;
     }
     public String deleteCommentsAndStringsFromCode(String code) {
-        String codeTemp = code.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", "");
-        codeTemp = codeTemp.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
+        String codeTemp = code.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", " ");
+        codeTemp = codeTemp.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", " ");
         return codeTemp;
     }
 }
