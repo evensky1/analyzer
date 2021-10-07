@@ -142,7 +142,9 @@ public class Code {
                 while (matcher.find()) {
                     // удаляем найденное, чтобы, например, "+=" не реагировало на "+" и "="
                     // для этой же цели в файле с регулярками всё в порядке от длинного к короткому
-                    codeTemp = codeTemp.replaceFirst(regExp, " ");
+                    if (!regExp.contains("and") && !regExp.contains("or") && !regExp.contains("not")) {
+                        codeTemp = codeTemp.replaceFirst(regExp, " ");
+                    }
                     match = matcher.group();
                     if (match.equals(":")) {
                         match = "? :";
