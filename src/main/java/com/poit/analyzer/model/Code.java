@@ -155,7 +155,7 @@ public class Code {
     public HashMap<String, Integer> codeOperandAnalyzing() {
         resultOperandsTable = new HashMap<>();
         String codeTemp = code.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
-        Pattern pattern = Pattern.compile("\".*?[^\\\\](\\\\\\\\)*\"");
+        Pattern pattern = Pattern.compile("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')");
         Matcher matcher = pattern.matcher(codeTemp);
         while(matcher.find()){
             if (resultOperandsTable.get(matcher.group()) == null) {
