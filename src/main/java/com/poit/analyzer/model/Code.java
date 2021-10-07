@@ -106,6 +106,12 @@ public class Code {
             resultOperatorsTable.putIfAbsent(matcher.group().trim(), 0);
         }
         //подсчёт вхождений каждой переменной
+        countHowManyFromDeclaredIsInCode(codeTemp, resultOperatorsTable);
+    }
+
+    private void countHowManyFromDeclaredIsInCode(String codeTemp, HashMap<String, Integer> resultOperatorsTable) {
+        Pattern pattern;
+        Matcher matcher;
         for (String varOperand : resultOperatorsTable.keySet()) {
             int count = 0; //так не хотелось много раз вызывать put и get
             pattern = Pattern.compile("\\b" + varOperand + "\\b");
@@ -152,6 +158,34 @@ public class Code {
         return resultOperatorsTable;
     }
 
+    private void findVariables(String codeTemp) {
+        String regEx = "\\b[_a-zA-Z]\\w*\\b(?=\\s*=)";
+        Pattern pattern = Pattern.compile(regEx);
+        Matcher matcher = pattern.matcher(codeTemp);
+        while(matcher.find()){
+            resultOperandsTable.put(matcher.group(), 0);
+        }
+
+        regEx = "\\bdef\\s+[a-zA-Z_]\\w*\\(([a-zA-Z_]\\w*)(\\s*,\\s*[a-zA-Z_]\\w*)*\\)";
+        pattern = Pattern.compile(regEx);
+        matcher = pattern.matcher(codeTemp);
+        String func, temp;
+        Pattern pattern1;
+        Matcher matcher1;
+        while(matcher.find()){
+            func = matcher.group();
+            temp = func.replaceAll(".*\\(", "").replaceAll("\\)", "");
+            pattern1 = Pattern.compile("[a-zA-Z_]\\w*");
+            matcher1 = pattern1.matcher(temp);
+            while (matcher1.find()) {
+                resultOperandsTable.put(matcher1.group(), 0);
+            }
+        }
+
+        countHowManyFromDeclaredIsInCode(codeTemp, resultOperandsTable);
+
+    }
+
     public HashMap<String, Integer> codeOperandAnalyzing() {
         resultOperandsTable = new HashMap<>();
         String codeTemp = code.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", " ");
@@ -164,9 +198,12 @@ public class Code {
                 resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
             }
         }
+
         codeTemp = codeTemp.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", " ");
-        //поиск инициализаций переменных и внесение их(переменных) в мапу
-        String[] patterns = {"\\b[_a-zA-Z]\\w*\\b(?=\\s*=)", "(?<=\\W)\\d+\\.\\d+",
+
+        //поиск объявлений переменных и внесение их(переменных) в мапу
+        findVariables(codeTemp);
+        String[] patterns = {"(?<=\\W)\\d+\\.\\d+",
                 "(?<!\\.)(?<=\\W)\\d+", "true|false"};
         for(String regExp: patterns){
             pattern = Pattern.compile(regExp);
