@@ -99,11 +99,11 @@ public class Code {
     }
 
     private void findFunctions(String codeTemp) {
-        Pattern pattern = Pattern.compile("(?<=\\bdef\\s)[a-zA-Z_]\\w*");
+        Pattern pattern = Pattern.compile("(?<=\\bdef)\\s+[a-zA-Z_]\\w*");
         Matcher matcher = pattern.matcher(codeTemp);
 
         while (matcher.find()) {
-            resultOperatorsTable.putIfAbsent(matcher.group(), 0);
+            resultOperatorsTable.putIfAbsent(matcher.group().trim(), 0);
         }
         //подсчёт вхождений каждой переменной
         for (String varOperand : resultOperatorsTable.keySet()) {
@@ -164,7 +164,7 @@ public class Code {
                 resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
             }
         }
-        codeTemp = codeTemp.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
+        codeTemp = codeTemp.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", "");
         //поиск инициализаций переменных и внесение их(переменных) в мапу
         String[] patterns = {"\\b[_a-zA-Z][_\\da-zA-Z]*\\b(?=\\s*=)", "(?<!\\.)(?<=\\W)\\d+",
                                 "(?<=\\W)\\d+(?=(\\.\\d+))", "true|false"};
