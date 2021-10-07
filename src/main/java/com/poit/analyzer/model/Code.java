@@ -203,10 +203,9 @@ public class Code {
 
         codeTemp = codeTemp.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", " ");
 
-        //поиск объявлений переменных и внесение их(переменных) в мапу
         findVariables(codeTemp);
-        String[] patterns = {"(?<=\\W)\\d+\\.\\d+",
-                "(?<!\\.)(?<=\\W)\\d+", "true|false"};
+        String[] patterns = {"(?<=\\W)\\d+\\.\\d+", "(?<!\\.)(?<=\\W)\\d+(?!\\.)(?!\\d)",
+                "true|false", "(?<=\\W)\\d+(?=[\\.]{2,3})", "(?<=\\.\\.)(?<=\\W)\\d+", "(?<=\\W)\\d+(?=\\.[A_Za-z]+)"};
         for(String regExp: patterns){
             pattern = Pattern.compile(regExp);
             matcher = pattern.matcher(codeTemp);
