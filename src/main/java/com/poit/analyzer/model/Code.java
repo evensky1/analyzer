@@ -134,7 +134,7 @@ public class Code {
                 while (matcher.find()) {
                     // удаляем найденное, чтобы, например, "+=" не реагировало на "+" и "="
                     // для этой же цели в файле с регулярками всё в порядке от длинного к короткому
-                    codeTemp = codeTemp.replaceFirst(regExp, "");
+                    codeTemp = codeTemp.replaceFirst(regExp, " ");
                     match = matcher.group();
                     if (match.equals(":")) {
                         match = "? :";
@@ -164,10 +164,9 @@ public class Code {
                 resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
             }
         }
-        codeTemp = codeTemp.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", "");
+        codeTemp = codeTemp.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", " ");
         //поиск инициализаций переменных и внесение их(переменных) в мапу
-        String[] patterns = {"\\b[_a-zA-Z][_\\da-zA-Z]*\\b(?=\\s*=)", "(?<!\\.)(?<=\\W)\\d+",
-                                "(?<=\\W)\\d+(?=(\\.\\d+))", "true|false"};
+        String[] patterns = {"\\b[_a-zA-Z]\\w*\\b(?=\\s*=)", "(?<=\\W)\\d+\\.\\d+", "(?<!\\.)(?<=\\W)\\d+", "true|false"};
         for(String regExp: patterns){
             pattern = Pattern.compile(regExp);
             matcher = pattern.matcher(codeTemp);
@@ -178,6 +177,7 @@ public class Code {
                     resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
                 }
             }
+            codeTemp = codeTemp.replaceAll(regExp, " ");
         }
         return resultOperandsTable;
     }
