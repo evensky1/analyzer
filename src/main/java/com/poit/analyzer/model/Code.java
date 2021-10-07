@@ -8,13 +8,58 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class Code {
-    //Тут можно организовать логику самого парсера
     private String code;
     private HashMap<String, Integer> resultOperatorsTable,
             resultOperandsTable;
 
     public Code() {
+    }
+
+    public int getOperandsCount() {
+        int operandsCount = 0;
+        if (resultOperandsTable != null) {
+            for (String varOperand : resultOperandsTable.keySet()) {
+                operandsCount += 1;
+            }
+        }
+        return operandsCount;
+    }
+
+    public int getOperandsSum() {
+        int operandsSum = 0;
+        if (resultOperandsTable != null) {
+            for (int currentCount : resultOperandsTable.values()) {
+                operandsSum += currentCount;
+            }
+        }
+        return operandsSum;
+    }
+
+    public int getOperatorsSum() {
+        int operatorsSum = 0;
+        if (resultOperatorsTable != null) {
+            for (int currentCount : resultOperatorsTable.values()) {
+                operatorsSum += currentCount;
+            }
+        }
+        return operatorsSum;
+    }
+
+    public int getOperatorsCount() {
+        int operatorsCount = 0;
+        if (resultOperatorsTable != null) {
+            for (String varOperator : resultOperatorsTable.keySet()) {
+                operatorsCount += 1;
+            }
+        }
+        return operatorsCount;
+    }
+
+    public double getVol() {
+        return (getOperandsSum() + getOperatorsSum()) *
+                (Math.log(getOperandsCount() + getOperatorsCount()) / Math.log(2));
     }
 
     public Code(String code) {
@@ -27,6 +72,14 @@ public class Code {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String createOutString() {
+        int operandsSum = getOperatorsCount() + getOperandsCount();
+        int operatorsSum = getOperatorsSum() + getOperandsSum();
+        return "Словарь программы h = " + getOperatorsCount() + " + " + getOperandsCount() + " = " + operandsSum +
+                "<br>Длина программы N = " + getOperatorsSum() + " + " + getOperandsSum() + " = " + operatorsSum +
+                "<br>Объём программы V = " + getVol();
     }
 
     private ArrayList<String> createArray() {
@@ -101,38 +154,34 @@ public class Code {
 
     public HashMap<String, Integer> codeOperandAnalyzing() {
         resultOperandsTable = new HashMap<>();
-        String codeTemp = deleteCommentsAndStringsFromCode(code);
-        //поиск инициализаций переменных и внесение их(переменных) в мапу
-        Pattern pattern = Pattern.compile("\\b[_a-zA-Z][_\\da-zA-Z]*\\b(?=\\s*=)");
+        String codeTemp = code.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
+        Pattern pattern = Pattern.compile("\".*?[^\\\\](\\\\\\\\)*\"");
         Matcher matcher = pattern.matcher(codeTemp);
-        while (matcher.find()) {
-                resultOperandsTable.putIfAbsent(matcher.group(), 0);
-        }
-        //подсчёт вхождений каждой переменной
-        for (String varOperand : resultOperandsTable.keySet()) {
-            int count = 0; //так не хотелось много раз вызывать put и get
-            pattern = Pattern.compile("\\b" + varOperand + "\\b");
-            matcher = pattern.matcher(codeTemp);
-            while (matcher.find()) {
-                count++;
-            }
-            resultOperandsTable.put(varOperand, count);
-        }
-        //подсчёт числовых литералов
-        pattern = Pattern.compile("(?<=\\W)\\d+");
-        matcher = pattern.matcher(codeTemp);
-        while (matcher.find()) {
+        while(matcher.find()){
             if (resultOperandsTable.get(matcher.group()) == null) {
                 resultOperandsTable.put(matcher.group(), 1);
             } else {
                 resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
             }
         }
+        codeTemp = codeTemp.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
+        //поиск инициализаций переменных и внесение их(переменных) в мапу
+        String[] patterns = {"\\b[_a-zA-Z][_\\da-zA-Z]*\\b(?=\\s*=)", "(?<!\\.)(?<=\\W)\\d+",
+                                "(?<=\\W)\\d+(?=(\\.\\d+))", "true|false"};
+        for(String regExp: patterns){
+            pattern = Pattern.compile(regExp);
+            matcher = pattern.matcher(codeTemp);
+            while(matcher.find()){
+                if (resultOperandsTable.get(matcher.group()) == null) {
+                        resultOperandsTable.put(matcher.group(), 1);
+                } else {
+                    resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
+                }
+            }
+        }
         return resultOperandsTable;
     }
-
     public String deleteCommentsAndStringsFromCode(String code) {
-        // Очевидно, что то, что в строках и комментариях, считать не стоит
         String codeTemp = code.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
         codeTemp = codeTemp.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
         return codeTemp;

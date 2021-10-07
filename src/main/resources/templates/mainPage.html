@@ -14,9 +14,8 @@
     <div class="btn">
         <button type="submit">Check</button>
     </div>
-    <div class="tableBox">
-        <div class="firstTable">
-            <table class="tcont countLines">
+        <div class="tableBox">
+            <table class="countLines">
                 <tr>
                     <th>j</th>
                     <th>Оператор</th>
@@ -28,9 +27,7 @@
                     <td th:text="${instance.getValue().toString()}">smth</td>
                 </tr>
             </table>
-        </div>
-        <div class="anotherTable">
-            <table class="tcont countLines">
+            <table class="countLines">
                 <tr>
                     <th>j</th>
                     <th>Операнд</th>
@@ -43,7 +40,7 @@
                 </tr>
             </table>
         </div>
-    </div>
+    <p th:utext="${inputCode.createOutString()}">smthing</p>
 </form>
 
 </body>
