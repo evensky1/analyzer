@@ -109,17 +109,19 @@ public class Code {
         countHowManyFromDeclaredIsInCode(codeTemp, resultOperatorsTable);
     }
 
-    private void countHowManyFromDeclaredIsInCode(String codeTemp, HashMap<String, Integer> resultOperatorsTable) {
+    private void countHowManyFromDeclaredIsInCode(String codeTemp, HashMap<String, Integer> resultTable) {
         Pattern pattern;
         Matcher matcher;
-        for (String varOperand : resultOperatorsTable.keySet()) {
-            int count = 0; //так не хотелось много раз вызывать put и get
-            pattern = Pattern.compile("\\b" + varOperand + "\\b");
-            matcher = pattern.matcher(codeTemp);
-            while (matcher.find()) {
-                count++;
+        for (String key : resultTable.keySet()) {
+            if (!key.contains("\"") && !key.contains("'")) {
+                int count = 0; //так не хотелось много раз вызывать put и get
+                pattern = Pattern.compile("\\b" + key + "\\b");
+                matcher = pattern.matcher(codeTemp);
+                while (matcher.find()) {
+                    count++;
+                }
+                resultTable.put(key, count);
             }
-            resultOperatorsTable.put(varOperand, count);
         }
     }
 
