@@ -154,7 +154,7 @@ public class Code {
 
     public HashMap<String, Integer> codeOperandAnalyzing() {
         resultOperandsTable = new HashMap<>();
-        String codeTemp = code.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
+        String codeTemp = code.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", " ");
         Pattern pattern = Pattern.compile("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')");
         Matcher matcher = pattern.matcher(codeTemp);
         while(matcher.find()){
@@ -164,7 +164,7 @@ public class Code {
                 resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
             }
         }
-        codeTemp = codeTemp.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", "");
+        codeTemp = codeTemp.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", " ");
         //поиск инициализаций переменных и внесение их(переменных) в мапу
         String[] patterns = {"\\b[_a-zA-Z]\\w*\\b(?=\\s*=)", "(?<=\\W)\\d+\\.\\d+",
                 "(?<!\\.)(?<=\\W)\\d+", "true|false"};
