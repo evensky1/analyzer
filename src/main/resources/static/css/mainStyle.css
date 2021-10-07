@@ -9,7 +9,7 @@ textarea{
     top: 5%;
     right: 40%;
     bottom: 10%;
-    width: 59%;
+    width: 39%;
     height: 79%;
     resize: none;
 }
@@ -36,7 +36,7 @@ textarea{
 .tableBox{
     position: absolute;
     display: inline-block;
-    left: 70%;
+    left: 50%;
     top: 5%;
 }
 .tableBox table{
