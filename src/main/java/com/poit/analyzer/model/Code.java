@@ -45,10 +45,31 @@ public class Code {
         }
     }
 
+    private void findFunctions(String codeTemp) {
+        Pattern pattern = Pattern.compile("(?<=\\bdef\\s)[a-zA-Z_]\\w*");
+        Matcher matcher = pattern.matcher(codeTemp);
+
+        while (matcher.find()) {
+            resultOperatorsTable.putIfAbsent(matcher.group(), 0);
+        }
+        //подсчёт вхождений каждой переменной
+        for (String varOperand : resultOperatorsTable.keySet()) {
+            int count = 0; //так не хотелось много раз вызывать put и get
+            pattern = Pattern.compile("\\b" + varOperand + "\\b");
+            matcher = pattern.matcher(codeTemp);
+            while (matcher.find()) {
+                count++;
+            }
+            resultOperatorsTable.put(varOperand, count);
+        }
+    }
+
     public HashMap<String, Integer> codeOperatorsAnalyzing() {
         String codeTemp = deleteCommentsAndStringsFromCode(code);
         ArrayList<String> regulars = createArray();
         resultOperatorsTable = new HashMap<>();
+
+        findFunctions(codeTemp);
 
         Pattern pattern;
         Matcher matcher;
