@@ -99,11 +99,11 @@ public class Code {
     }
 
     private void findFunctions(String codeTemp) {
-        Pattern pattern = Pattern.compile("(?<=\\bdef\\s)[a-zA-Z_]\\w*");
+        Pattern pattern = Pattern.compile("(?<=\\bdef)\\s+[a-zA-Z_]\\w*");
         Matcher matcher = pattern.matcher(codeTemp);
 
         while (matcher.find()) {
-            resultOperatorsTable.putIfAbsent(matcher.group(), 0);
+            resultOperatorsTable.putIfAbsent(matcher.group().trim(), 0);
         }
         //подсчёт вхождений каждой переменной
         for (String varOperand : resultOperatorsTable.keySet()) {
@@ -164,10 +164,10 @@ public class Code {
                 resultOperandsTable.put(matcher.group(), resultOperandsTable.get(matcher.group()) + 1);
             }
         }
-        codeTemp = codeTemp.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
+        codeTemp = codeTemp.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", "");
         //поиск инициализаций переменных и внесение их(переменных) в мапу
-        String[] patterns = {"\\b[_a-zA-Z][_\\da-zA-Z]*\\b(?=\\s*=)", "(?<!\\.)(?<=\\W)\\d+",
-                                "(?<=\\W)\\d+(?=(\\.\\d+))", "true|false"};
+        String[] patterns = {"\\b[_a-zA-Z]\\w*\\b(?=\\s*=)", "(?<=\\W)\\d+\\.\\d+",
+                "(?<!\\.)(?<=\\W)\\d+", "true|false"};
         for(String regExp: patterns){
             pattern = Pattern.compile(regExp);
             matcher = pattern.matcher(codeTemp);
@@ -182,7 +182,7 @@ public class Code {
         return resultOperandsTable;
     }
     public String deleteCommentsAndStringsFromCode(String code) {
-        String codeTemp = code.replaceAll("\".*?[^\\\\](\\\\\\\\)*\"", "");
+        String codeTemp = code.replaceAll("(\".*?[^\\\\](\\\\\\\\)*\")|('.*?[^\\\\](\\\\\\\\)*')", "");
         codeTemp = codeTemp.replaceAll("(=begin\\s(.*\\r?\\n)*?=end\\s)|(#.*)", "");
         return codeTemp;
     }
