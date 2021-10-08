@@ -152,6 +152,8 @@ public class Code {
                         match = "? :";
                     } else if (match.equals("when")) {
                         match = "case when";
+                    } else if (match.contains("(")) {
+                        match = "( )";
                     }
                     if (resultOperatorsTable.get(match) == null) {
                         resultOperatorsTable.put(match, 1);
