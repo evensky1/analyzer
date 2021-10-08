@@ -142,7 +142,9 @@ public class Code {
                 while (matcher.find()) {
                     // удаляем найденное, чтобы, например, "+=" не реагировало на "+" и "="
                     // для этой же цели в файле с регулярками всё в порядке от длинного к короткому
-                    if (!regExp.contains("and") && !regExp.contains("or") && !regExp.contains("not")) {
+                    if (regExp.contains("(")) {
+                        codeTemp = codeTemp.replaceFirst("\\(", " ");
+                    } else {
                         codeTemp = codeTemp.replaceFirst(regExp, " ");
                     }
                     match = matcher.group();
@@ -150,8 +152,6 @@ public class Code {
                         match = "? :";
                     } else if (match.equals("when")) {
                         match = "case when";
-                    } else if (match.contains("(")) {
-                        match = "( )";
                     }
                     if (resultOperatorsTable.get(match) == null) {
                         resultOperatorsTable.put(match, 1);
